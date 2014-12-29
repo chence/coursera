@@ -1,111 +1,87 @@
-# Coursera Downloader
+# Coursera 下载器
 
 [![Build Status](https://travis-ci.org/coursera-dl/coursera.png?branch=master)](https://travis-ci.org/coursera-dl/coursera)
 [![Coverage Status](https://coveralls.io/repos/coursera-dl/coursera/badge.png)](https://coveralls.io/r/coursera-dl/coursera)
 
-[Coursera][1] is arguably the leader in *massive open online courses* (MOOC)
-with a selection of more than 300 classes from 62 different institutions [as of
-February 2013][13]. Generous contributions by educators and institutions are
-making excellent education available to many who could not afford it otherwise.
-There are even non-profits with "feet on the ground" in remote areas of the
-world who are helping spread the wealth (see the feedback below from [Tunapanda][14]).
+[Coursera][1] 作为*大规模在线开放课程* (MOOC)的领先的领先者，截止到[2013年2月][13]有了精选自
+62个不同机构的超过300多个课程。这些教育工作者和机构们在Coursera上慷慨的贡献使得许多人得到了他们原本得不到的出色的教育资源。
 
-This script makes it easier to batch download lecture resources (e.g., videos, ppt,
-etc) for Coursera classes.  Given one or more class names and account credentials,
-it obtains week and class names from the *lectures* page, and then downloads
-the related materials into appropriately named files and directories.
+这个脚本使批量下载Coursera的课程资源（比如 视频，ppt等）更容易。提供一个或多个课程名称以及帐号信息，
+它会获得周和课程名的提纲页，然后下载相关资料到合适命名的文件和目录。
 
-Why is this helpful?  A utility like [`wget`][2] can work, but has the
-following limitations:
+为什么这个脚本是有帮助的？ 像[`wget`][2]的工具也能用，但是有这些限制：
 
-1. Video names have a number in them, but this does not correspond to the
-   actual order.  Manually renaming them is a pain.
-2. Using names from the syllabus page provides more informative names.
-3. Using a wget in a for loop picks up extra videos which are not
-   posted/linked, and these are sometimes duplicates.
+1. 视频名称里包含数字，但是这不对应于实际的顺序。手动重命名这些文件是非常痛苦的。
+2. 使用教学大纲页面提供的有更多信息的名字。
+3. 使用wget循环得到视频中包含的未提交或未链接的额外视频时，时常会重复下载。
 
-*DownloadThemAll* is another possibility, but this script provides more
-features such as appropriately named files.
+*下载全部* 是另一种可能, 但是这个脚本还提供了更多的特性比如适当的命名文件。
 
-This work was originally inspired in part by [youtube-dl][3] by which
-I've downloaded many other good videos such as those from Khan Academy.
+这项工作的最初灵感部分源自于[youtube-dl][3]——作者之前用于从其他地方比如可汗学院下载视频的工具。
 
 
-## Features
+## 特性
 
   * Intentionally detailed names, so that it will display and sort properly
     on most interfaces (e.g., MX Video, or [VLC][4] on Android devices).
-  * Regex-based section (week) and lecture name filters to download only
-    certain resources.
-  * File format extension filter to grab resource types you want.
-  * Login credentials accepted on command-line or from `.netrc` file
-  * Core functionality tested on Linux, Mac and Windows.
+  * 基于正则表达式的 section (week) and lecture 名称过滤器，使您仅下载需要的资源。
+  * 通过文件扩展名过滤使您获得仅需的资源。
+  * 允许通过命令行或者.netrc的方式进行登录认证。
+  * 核心功能通过Linux，Mac和Windows平台的测试。
 
 
-## Instructions
+## 说明
 
-`coursera-dl` requires Python 2 or Python 3 and a free Coursera account
-enrolled in the class of interest. (At present/May of 2014, we test
-automatically the execution of the program with Python versions 2.6, 2.7,
-Pypy, 3.2, 3.3, and 3.4).
+`coursera-dl` 需要 Python 2 或者 Python 3 和 一个报名参加了感兴趣课程的免费Coursera帐号。
+（目前／2014年5月，我们对该程序在Python 2.6, 2.7, 3.2, 3.3, 3.4和Pypy下执行自动化测试通过）
 
-On any operating system, ensure that the Python executable location is added
-to your PATH environment variable and, once you have the dependencies
-installed (see next section), for a *basic* usage, you will need to invoke
-the script from the main directory of the project and prepend it with the
-word `python`.  You can also use more advanced features of the program by
-looking at the "Running the script" section of this document.
+在任何的操作系统下，确保Python的执行目录添加到了你的PATH环境变量下，并且您已经安装了所有依赖（参考
+下节），因为一个基础的用法，你需要在该项目的主目录下使用｀Python｀命令调用这个脚本。参考该文档的
+“运行脚本”这一节，你可以使用更多关于这个脚本的高级特性。
 
-*Note:* You must already have (manually) agreed to the Honor of Code of the
+*注意:* You must already have (manually) agreed to the Honor of Code of the
 particular courses that you want to use with `coursera-dl`.
 
-### Install any missing dependencies.
+### 安装所有缺少的依赖包。
 
-We strongly recommend that you consider installing Python packages with
-[`pip`][17], as in it is the current [preferred method][18].  If you are
-using `pip`, you can directly install all the dependencies from the
-requirements file using `pip install -r requirements.txt`.
+我们强烈推荐您考虑使用[`pip`][17]安装Python包，因为它是当前的[首选方法][18]。如果您使用`pip`，
+你可以直接使用这个命令 `pip install -r requirements.txt` 安装所有需要的依赖包。
 
-### Installing dependencies on your own
+### 你自己安装依赖包
 
-**Warning:** This method is not recommended unless you know what you are
-doing. Before filing bug reports, please check that the versions of your
-modules are those recommended in the `requirements.txt` file.
+**警告：** 除非您知道要做什么否则这个方法是不被推荐的。在您提交bug之前，请检查您安装的模块和
+`requirements.txt`文件中推荐的版本号是一致的。
 
-You may choose to install the dependencies yourself, but our users had
-issues that not all resources (videos etc.) were downloaded with versions
-of the dependencies different than those listed in the `requirements.txt`
-file.
+您可以选择自己安装这些依赖，但是有用户出现过使用不同于 `requirements.txt` 中列出的版本号的包导致
+下载到的资源不全的情况。
 
-In any case, you may want to install:
+无论如何，您应该安装：
 
-* [Beautiful Soup 4][5]: Required. See also html5lib below.
+* [Beautiful Soup 4][5]: 必须的。请参见下面的 html5lib。
   - Ubuntu/Debian: `sudo apt-get install python-bs4`
   - Mac OSX + MacPorts: `sudo port install py-beautifulsoup4`
   - Other: `pip install beautifulsoup4`
-* [Argparse][6]: Required (but you only need to install with Python 2.6)
+* [Argparse][6]: 必须的。 （但是仅当您使用Python2.6的时候）
   - Ubuntu/Debian: `sudo apt-get install python-argparse`
   - Other: `pip install argparse`
-* [requests][16]: Required.
+* [requests][16]: 必须的。
   - Ubuntu/Debian: `sudo apt-get install python-requests`
   - Mac OSX + MacPorts: `sudo port install py-requests`
   - Other: `pip install requests`
-* [six][19]: Required.
+* [six][19]: 必须的。
   - Ubuntu/Debian: `sudo apt-get install python-six`
   - Mac OSX + MacPorts: `sudo port install py27-six`
   - Other: `pip install six`
-* [html5lib][15]: Not required, but recommended for parsing pages.
+* [html5lib][15]: 不必须，但建议用来解析页面。
   - Ubuntu/Debian: `sudo apt-get install python-html5lib`
   - Mac OSX + MacPorts: `sudo port install py-html5lib`
   - Other: `pip install html5lib`
-* [easy_install][7]: Only necessary if not using prepackaged
-  dependencies. Also, `pip` supersedes it.
+* [easy_install][7]: 仅在不使用预包装的依赖时是必须的。另外，PIP已经取代了它。
   - Ubuntu/Debian: `sudo apt-get install python-setuptools`
 
-Again, make sure that you have the versions mentioned in the file
-`requirements.txt` (later versions may be OK).
+再次，请确保您安装的是`requirements.txt`文件中提到的版本号（更新的版本应该也可以）。
 
-On Mac OSX using MacPorts, the following may be used:
+在Mac OSX下使用MacPorts，您应该用到下列命令：
 
     port
     > select --set python python27
@@ -115,94 +91,72 @@ On Mac OSX using MacPorts, the following may be used:
     > install py-requests
     > install py27-six
 
-### Create an account with Coursera
+### 创建一个Coursera的帐号
 
-If you don't already have one, create a [Coursera][1] account and enroll in
-a class. See https://www.coursera.org/courses for the list of classes.
+如果你还没有，创建一个[Coursera][1]的帐号并且报名参加一个课程。
+查看课程列表 https://www.coursera.org/courses
 
-### Running the script
+### 运行脚本
 
-Run the script to download the materials by providing your Coursera account
-credentials (e.g. email address and password or a `~/.netrc` file), the class names,
-as well as any additional parameters:
+运行这个脚本下载资料，需要提供您的Coursera帐号认证信息（如 邮箱和密码 或者 `~/.netrc`文件），课程名称，
+以及一些其他的参数：
 
-    General:                     coursera-dl -u <user> -p <pass> modelthinking-004
-    Multiple classes:            coursera-dl -u <user> -p <pass> saas historyofrock1-001 algo-2012-002
-    Filter by section name:      coursera-dl -u <user> -p <pass> -sf "Chapter_Four" crypto-004
-    Filter by lecture name:      coursera-dl -u <user> -p <pass> -lf "3.1_" ml-2012-002
-    Download only ppt files:     coursera-dl -u <user> -p <pass> -f "ppt" qcomp-2012-001
-    Use a ~/.netrc file:         coursera-dl -n -- matrix-001
-    Get the preview classes:     coursera-dl -n -b ni-001
-    Specify download path:       coursera-dl -n --path=C:\Coursera\Classes\ comnetworks-002
-    Display help:                coursera-dl --help
-    
-    Maintain a list of classes in a dir:
-      Initialize:              mkdir -p CURRENT/{class1,class2,..classN}
-      Update:                  coursera-dl -n --path CURRENT `\ls CURRENT`
-    
-    Note: If your ls command is aliased to display a colorized output, you may experience problems. 
-    Be sure to escape the ls command (use \ls) to assure that no special characters get sent to the script.
+    一般:                     coursera-dl -u <user> -p <pass> modelthinking-004
+    多个课程:                  coursera-dl -u <user> -p <pass> saas historyofrock1-001 algo-2012-002
+    按section名称筛选:         coursera-dl -u <user> -p <pass> -sf "Chapter_Four" crypto-004
+    按lecture名称筛选:         coursera-dl -u <user> -p <pass> -lf "3.1_" ml-2012-002
+    仅下载ppt文件:             coursera-dl -u <user> -p <pass> -f "ppt" qcomp-2012-001
+    使用~/.netrc文件:          coursera-dl -n -- matrix-001
+    获取课程预览:               coursera-dl -n -b ni-001
+    指定下载目录:               coursera-dl -n --path=C:\Coursera\Classes\ comnetworks-002
+    显示帮助:                  coursera-dl --help
 
-On \*nix platforms, the use of a `~/.netrc` file is a good alternative to
-specifying both your username (i.e., your email address) and password every
-time on the command line. To use it, simply add a line like the one below to
-a file named `.netrc` in your home directory (or the [equivalent][8], if you
-are using Windows) with contents like:
+    维持课程列表在一个目录下：
+      初始:              mkdir -p CURRENT/{class1,class2,..classN}
+      更新:              coursera-dl -n --path CURRENT `\ls CURRENT`
+
+    注意：如果你的`ls`命令是显示彩色输出的一个别名，您可能会遇到问题。
+    一定要确保ls命令（在使用 \ls的时候）没有特殊字符被发送到脚本。
+
+在\*nix平台下，使用 `~/.netrc`文件是每次在命令行上都要输入帐号（邮箱）密码的一个好的替代。
+要使用它，只需在家目录（或者Windows下[类似的方法][8]）下一个名为 `.netrc`的文件添加
+类似下面的一行内容：
 
     machine coursera-dl login <user> password <pass>
 
-Create the file if it doesn't exist yet.  From then on, you can switch from
-using `-u` and `-p` to simply call `coursera-dl` with the option `-n`
-instead.  This is especially convenient, as typing usernames (email
-addresses) and passwords directly on the command line can get tiresome (even
-more if you happened to choose a "strong" password).
+如果这个文件还不存在就创建一个。从此，您在调用cousera-dl时可以简单的使用-n来替代-u和-p了。
+这是一个快捷方式，让你不再烦人的直接在命令行输入用户名和密码（尤其您在使用了一个很“强”的密码的时候）
 
-**NOTE**: If your password contains punctuation, quotes or other "funny
-characters" (e.g., `<`, `>`, `#`, `&`, `|` and so on), then you may have to
-escape them from your shell. With bash or other Bourne-shell clones (and
-probably with many other shells) one of the better ways to do so is to
-enclose your password in single quotes, so that you don't run into
-problems.  See issue #213 for more information.
+**注意**： 如果你的密码包含逗号，引号或者其他“有趣的符号”（比如 `<`， ``，``，``，``等等），
+那你必须在shell上对它们进行转义。与bash或其他许多其他s​​hell相比，更好的方式是把您的密码放在单引号里，
+这样你就不会遇到问题。查看issue#213获得更多信息。
 
-## Troubleshooting
+## 故障排除
 
-If you have problems when downloading class materials, please try to see if
-one of the following actions solve your problem:
+如果您在下载课程资料时遇到问题，请尝试看看下列操作之一能否解决您的问题：
 
-* Make sure the class name you are using corresponds to the resource name
-  used in the URL for that class:
+* 使用这个链接确保您的课程名称是拼写正确的
     `https://class.coursera.org/<CLASS_NAME>/class/index`
 
-* Have you tried to clean the cached cookies/credentials with the
-  `--clear-cache` option?
+* 您是否尝试使用`--clear-cache`选项来清除您的cookie和帐号信息？
 
-* Note that many courses (most, perhaps?) may remove the materials after a
-  little while after the course is completed, while other courses may retain
-  the materials up to a next session/offering of the same course (to avoid
-  problems with academic dishonesty, apparently).
+* 需要注意的是很多课程（可能是大多数的？）在课程结束后没多久可能会删除这些资料，也有其他课程会把资料
+保留到下一次开课(to avoid problems with academic dishonesty, apparently).
 
-  In short, it is not guaranteed that you will be able to download after the
-  course is finished and this is, unfortunately, nothing that we can help
-  you with.
+  总之，它不能保证你一定能够下载完成后的课程，不幸的是，没有什么可以帮到您。
 
-* Make sure you have installed and/or updated all of your dependencies
-  according to the `requirements.txt` file as described above.
- 
+* 确保您已经安装了上述`requirements.txt`文件中提到的所有依赖包
+
 * One can export a Netscape-style cookies file with a browser extension
   ([1][9], [2][10]) and use it with the `-c` option. This comes in handy
   when the authentication via password is not working (the authentication
   process changes now and then).
 
-* If results show 0 sections, you most likely have provided invalid
-  credentials (username and/or password in the command line or in your
-  `.netrc` file).
+* 如果结果显示为0节，最有可能的是您提供的凭据（在命令行或在您的.netrc文件的用户名和/或密码）无效。
 
-* For courses that have not started yet, but have had a previous iteration
-  sometimes a preview is available, containing all the classes from the
-  last course. These files can be downloaded by passing the -b parameter.
+* 对于那些还没有开始，但已经有一个以前的迭代，有时预览可用，包含从上次当然，所有的类课程。这些文件可以通过传递-b参数下载。
 
-* If you are using Beautiful Soup 4, make sure you have installed
-  html5lib:
+* 如果您使用Beautiful Soup 4，请确保您已经安装了html5lib：
 
         $ python
         >>> import html5lib
@@ -254,7 +208,7 @@ I enjoy getting feedback. Here are a few of the comments I've received:
 * "Thanks for the good job! Knowledge will flood the World a little more thanks
   to your script!"
   <br>Guillaume V. 11/8/2012
-  
+
 * "Just wanted to send you props for your Python script to download Coursera
   courses. I've been using it in Kenya for my non-profit to get online courses
   to places where internet is really expensive and unreliable. Mostly kids here
@@ -267,7 +221,7 @@ I enjoy getting feedback. Here are a few of the comments I've received:
   I came across your script, and I am very happily using it!  Great stuff and
   thanks for making this available on Github - well done!"
   <br>William G.  2/18/2013
-  
+
 * "This script is awesome! I was painstakingly downloading each and every video
   and ppt by hand -- looked into wget but ran into wildcard issues with HTML,
   and then.. I came across your script.  Can't tell you how many hours you've
@@ -305,4 +259,3 @@ first last at geemail dotcom or [@jplehmann][12]
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/coursera-dl/coursera/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
